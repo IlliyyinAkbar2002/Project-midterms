@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Project\\Project-midterms\\Project_C#\\Project_C#.csproj": {}
+    "D:\\Kuliah\\GitKpl\\Project-midterms\\Project_C#\\Project_C#.csproj": {}
   },
   "projects": {
-    "E:\\Project\\Project-midterms\\Project_C#\\Project_C#.csproj": {
+    "D:\\Kuliah\\GitKpl\\Project-midterms\\Project_C#\\Project_C#.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Project-midterms\\Project_C#\\Project_C#.csproj",
+        "projectUniqueName": "D:\\Kuliah\\GitKpl\\Project-midterms\\Project_C#\\Project_C#.csproj",
         "projectName": "Project_C#",
-        "projectPath": "E:\\Project\\Project-midterms\\Project_C#\\Project_C#.csproj",
-        "packagesPath": "C:\\Users\\aljab\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Project-midterms\\Project_C#\\obj\\",
+        "projectPath": "D:\\Kuliah\\GitKpl\\Project-midterms\\Project_C#\\Project_C#.csproj",
+        "packagesPath": "C:\\Users\\1\\.nuget\\packages\\",
+        "outputPath": "D:\\Kuliah\\GitKpl\\Project-midterms\\Project_C#\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\aljab\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\1\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -57,6 +57,10 @@
             "MySql.Data": {
               "target": "Package",
               "version": "[9.3.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           },
           "imports": [
@@ -75,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
