@@ -37,23 +37,34 @@ namespace Project_C_.Front_end
 
         private static void ShowAdminMenu()
         {
-            Console.WriteLine("1. Create Post");
-            Console.WriteLine("2. View Posts");
-            Console.WriteLine("3. Log Out");
+            Console.WriteLine("Welcome to the Admin Page!");
+            Console.WriteLine("1. View User Data");
+            Console.WriteLine("2. Create User Data");
+            Console.WriteLine("3. View Complaints");
+            Console.WriteLine("4. Search Complaints");
+            Console.WriteLine("q untuk Logout");
+            Console.Write("Please select an option (1-4): ");
+            string choice = Console.ReadLine();
         }
 
         private static void ShowLurahMenu()
         {
-            Console.WriteLine("1. Acc Post");
-            Console.WriteLine("2. View Posts");
-            Console.WriteLine("3. Log Out");
+            Console.WriteLine("1. Profile");
+            Console.WriteLine("2. Cek Laporan");
+            Console.WriteLine("3. Cari Post");
+            Console.WriteLine("q untuk Logout");
+            Console.Write("Please select an option (1-4): ");
         }
 
         private static void ShowMasyarakatMenu()
         {
-            Console.WriteLine("1. Create Post");
-            Console.WriteLine("2. View Posts");
-            Console.WriteLine("3. Log Out");
+            Console.WriteLine("Welcome to the Masyarakat Page!");
+            Console.WriteLine("1. Profile");
+            Console.WriteLine("2. Create Complaint");
+            Console.WriteLine("3. View Complaints");
+            Console.WriteLine("4. Search Complaints");
+            Console.WriteLine("q untuk Logout");
+            Console.Write("Please select an option (1-4): ");
         }
     }
 }
