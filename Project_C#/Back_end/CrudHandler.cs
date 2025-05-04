@@ -13,7 +13,7 @@ public class CrudHandler
 	}
 
 	// Create Post
-	public static void CreatePost()
+	public void CreatePost()
 	{
 		Console.Write("Title: ");
 		string title = Console.ReadLine();
@@ -24,7 +24,7 @@ public class CrudHandler
 	}
 
 	// View Posts
-	public static void ViewPost()
+	public void ViewPost()
 	{
 		var allPosts = postsManager.GetAllPosts();
 		if (allPosts.Count == 0)
