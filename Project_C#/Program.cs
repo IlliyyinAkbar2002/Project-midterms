@@ -34,6 +34,7 @@ namespace Project_C_
                         break;
                     case State.Logout:
                         Console.WriteLine("Logged out.");
+                        currentState = State.Home;  // Automata: Kembali ke Home setelah logout
                         return;
                     case State.Home:
                         // **Login/Registration Menu**: Pilihan awal untuk login atau register
@@ -51,17 +52,21 @@ namespace Project_C_
             var postsManager = new Posts();
             var crudHandler = new CrudHandler(userManager, postsManager, currentUser.Username);
 
-            if (choice == "1")
+            if (choice == "2")
             {
                 crudHandler.CreatePost();
                 currentState = State.MainMenu;
             }
-            else if (choice == "2")
+            else if (choice == "3")
             {
                 crudHandler.ViewPost();
                 currentState = State.MainMenu;
             }
-            else if (choice == "3")  // "Log Out"
+            /*else if (choice == "3")  // "Log Out"
+            {
+                currentState = State.Logout;  // Transition to logout state
+            }*/
+            else if (choice == "q")  // "Log Out"
             {
                 currentState = State.Logout;  // Transition to logout state
             }
