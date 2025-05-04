@@ -11,9 +11,9 @@ namespace Project_C_.Back_end
     public class UserManager
     {
         private List<User> users;
-        private List<Post> posts;  // Daftar untuk menyimpan data post
+        
         private const string usersFilePath = "users.json";  // Lokasi file JSON
-        private const string postsFilePath = "crud_masyarakat.json";  // Lokasi file JSON untuk posts
+        
 
         public UserManager()
         {
