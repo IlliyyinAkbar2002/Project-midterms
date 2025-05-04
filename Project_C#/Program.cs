@@ -29,6 +29,9 @@ namespace Project_C_
                         Menu.ShowMainMenu(currentUser);
                         HandleMainMenuSelection();
                         break;
+                    case State.Posts:
+                        // Removed Posts state and handler
+                        break;
                     case State.Logout:
                         Console.WriteLine("Logged out.");
                         return;
@@ -45,16 +48,20 @@ namespace Project_C_
             Console.WriteLine("Choose an option:");
             string choice = Console.ReadLine();
 
-            // Handle user input for menu options
-            if (choice == "1")  // option 1 is "??"
+            var postsManager = new Posts();
+            var crudHandler = new CrudHandler(userManager, postsManager, currentUser.Username);
+
+            if (choice == "1")
             {
-                // Call the function to create a post
-                Console.WriteLine("Creating Post...");
+                Console.Clear();
+                crudHandler.CreatePost();
+                currentState = State.MainMenu;
             }
-            else if (choice == "2")  // option 2 is "??"
+            else if (choice == "2")
             {
-                // Call the function to view posts
-                Console.WriteLine("Viewing Posts...");
+                Console.Clear();
+                crudHandler.ViewPost();
+                currentState = State.MainMenu;
             }
             else if (choice == "3")  // "Log Out"
             {
@@ -63,6 +70,7 @@ namespace Project_C_
             else
             {
                 Console.WriteLine("Invalid choice! Please try again.");
+                currentState = State.MainMenu;
             }
         }
     }

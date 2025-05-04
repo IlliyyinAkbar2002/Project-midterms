@@ -12,6 +12,7 @@ namespace Project_C_.Back_end
         Register,
         MainMenu,
         Logout,
-        Home
+        Home,
+        Posts
     }
 }
