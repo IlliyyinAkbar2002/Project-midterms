@@ -53,13 +53,11 @@ namespace Project_C_
 
             if (choice == "1")
             {
-                Console.Clear();
                 crudHandler.CreatePost();
                 currentState = State.MainMenu;
             }
             else if (choice == "2")
             {
-                Console.Clear();
                 crudHandler.ViewPost();
                 currentState = State.MainMenu;
             }
