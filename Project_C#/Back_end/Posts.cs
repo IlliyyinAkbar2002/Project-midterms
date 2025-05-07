@@ -47,6 +47,20 @@ public class Posts
         SavePostsToFile();
     }
 
+    public void DeletePost(string title)
+    {
+        Post postToDelete = posts.FirstOrDefault(p => p.Title == title);
+        if (postToDelete != null)
+        {
+            posts.Remove(postToDelete);
+            SavePostsToFile();
+        }
+        else
+        {
+            Console.WriteLine("Post not found.");
+        }
+    }
+
     public List<Post> GetAllPosts()
     {
         return posts;

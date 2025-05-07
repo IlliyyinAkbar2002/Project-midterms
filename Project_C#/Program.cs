@@ -62,10 +62,11 @@ namespace Project_C_
                 crudHandler.ViewPost();
                 currentState = State.MainMenu;
             }
-            /*else if (choice == "3")  // "Log Out"
+            else if (choice == "4")  // "Log Out"
             {
-                currentState = State.Logout;  // Transition to logout state
-            }*/
+                crudHandler.DeletePost();
+                currentState = State.MainMenu;
+            }
             else if (choice == "q")  // "Log Out"
             {
                 currentState = State.Logout;  // Transition to logout state

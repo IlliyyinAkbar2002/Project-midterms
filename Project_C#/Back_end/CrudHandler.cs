@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 public class CrudHandler
 {
@@ -26,7 +27,7 @@ public class CrudHandler
 	// View Posts
 	public void ViewPost()
 	{
-		var allPosts = postsManager.GetAllPosts();
+		var allPosts = postsManager.GetAllPosts().Where(p => p != null).ToList();
 		if (allPosts.Count == 0)
 		{
 			Console.WriteLine("No posts found.");
@@ -37,5 +38,36 @@ public class CrudHandler
 		{
 			Console.WriteLine($"Title: {post.Title}\nContent: {post.Content}\nAuthor: {post.Author}\nCreated At: {post.CreatedAt}\n");
 		}
+	}
+
+	// public void SearchPost()
+	// {
+	// 	Console.Write("Enter the title of the post to search: ");
+	// 	string title = Console.ReadLine();
+    //     var post = postsManager.GetAllPosts()
+    //          .FirstOrDefault(p => p != null && p.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+	// 	if (post != null)
+	// 	{
+	// 		Console.WriteLine($"Title: {post.Title}\nContent: {post.Content}\nAuthor: {post.Author}\nCreated At: {post.CreatedAt}");
+	// 		Console.Write("Do you want to delete this post? (y/n): ");
+	// 		string input = Console.ReadLine();
+	// 		if (input.Equals("y", StringComparison.OrdinalIgnoreCase))
+	// 		{
+	// 			postsManager.DeletePost(title);
+	// 			Console.WriteLine("Post deleted successfully.");
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		Console.WriteLine("Post not found.");
+	// 	}
+	// }
+
+	public void DeletePost()
+	{
+		Console.Write("Enter the title of the post to delete: ");
+		string title = Console.ReadLine();
+		postsManager.DeletePost(title);
+		Console.WriteLine("Post deleted successfully.");
 	}
 }
