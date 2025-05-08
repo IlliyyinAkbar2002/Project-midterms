@@ -52,7 +52,12 @@ namespace Project_C_
             var postsManager = new Posts();
             var crudHandler = new CrudHandler(userManager, postsManager, currentUser.Username);
 
-            if (choice == "2")
+            if (choice == "1")
+            {
+                crudHandler.ViewProfile();
+                currentState = State.MainMenu;
+            }
+            else if (choice == "2")
             {
                 crudHandler.CreatePost();
                 currentState = State.MainMenu;

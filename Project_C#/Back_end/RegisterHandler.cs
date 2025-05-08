@@ -29,13 +29,16 @@ namespace Project_C_.Back_end
                 return;
             }
 
+            Console.Write("Enter nama: ");
+            string nama = Console.ReadLine();
+
             nextState = State.Register;
 
             Role role = Role.Masyarakat;  // Role default: Masyarakat
 
             try
             {
-                userManager.Register(username, password, role);
+                userManager.Register(username, password, role, nama);
                 Console.WriteLine("Registration successful! You can log in now.");
                 nextState = State.Login;  // Automata: Berpindah ke Login setelah register sukses
             }

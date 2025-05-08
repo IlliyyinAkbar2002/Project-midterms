@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Project_C_.Back_end;
 
 public class CrudHandler
 {
@@ -11,6 +12,14 @@ public class CrudHandler
 		this.userManager = userManager;
 		this.postsManager = postsManager;
 		this.currentUsername = currentUsername;
+	}
+
+	public void ViewProfile()
+	{
+		User user = userManager.GetUserByUsername(currentUsername);
+		Console.WriteLine($"Username: {user.Username}");
+		Console.WriteLine($"Password: {user.Password}");
+		Console.WriteLine($"Nama: {user.Nama}");		
 	}
 
 	// Create Post

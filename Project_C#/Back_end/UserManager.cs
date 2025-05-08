@@ -45,7 +45,7 @@ namespace Project_C_.Back_end
         }
 
         // **Design by Contract (DbC)** - Menambahkan preconditions untuk validasi input
-        public void Register(string username, string password, Role role)
+        public void Register(string username, string password, Role role, string nama)
         {
             // **Precondition**: Pastikan username dan password tidak kosong
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -56,7 +56,7 @@ namespace Project_C_.Back_end
                 throw new ArgumentException("Username already exists.");
 
             // **Postcondition**: Pengguna baru ditambahkan ke daftar pengguna
-            User newUser = new User(username, password, role);
+            User newUser = new User(username, password, role, nama);
             users.Add(newUser);
             SaveUsersToFile();  // Simpan data pengguna ke file JSON
         }
@@ -66,6 +66,12 @@ namespace Project_C_.Back_end
         {
             string json = JsonConvert.SerializeObject(users, Formatting.Indented);
             File.WriteAllText(usersFilePath, json);
+        }
+
+        // Add this method to get a user by username
+        public User GetUserByUsername(string username)
+        {
+            return users.FirstOrDefault(u => u.Username == username);
         }
     }
 }
