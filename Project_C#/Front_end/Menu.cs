@@ -31,8 +31,6 @@ namespace Project_C_.Front_end
             {
                 ShowMasyarakatMenu();
             }
-
-
         }
 
         private static void ShowAdminMenu()
@@ -44,7 +42,6 @@ namespace Project_C_.Front_end
             Console.WriteLine("4. Search Complaints");
             Console.WriteLine("q untuk Logout");
             Console.Write("Please select an option (1-4): ");
-            string choice = Console.ReadLine();
         }
 
         private static void ShowLurahMenu()

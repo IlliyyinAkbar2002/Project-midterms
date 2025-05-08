@@ -77,5 +77,42 @@ namespace Project_C_
                 currentState = State.MainMenu;
             }
         }
+
+        static void HandleAdminMenuSelection()
+        {
+            Console.WriteLine("Choose an option:");
+            string choice = Console.ReadLine();
+
+            var crudAdmin = new CrudAdmin();
+            if (choice == "1")
+            {
+                // crudAdmin.ViewUser();
+                // currentState = State.MainMenu;
+            }
+            else if (choice == "2")
+            {
+                // crudAdmin.CreatePost();
+                // currentState = State.MainMenu;
+            }
+            else if (choice == "3")
+            {
+                crudAdmin.ViewComplaints();
+                currentState = State.MainMenu;
+            }
+            else if (choice == "4")
+            {
+                // crudAdmin.SearchComplaints();
+                // currentState = State.MainMenu;
+            }
+            else if (choice == "q")
+            {
+                currentState = State.Logout;
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice! Please try again.");
+                currentState = State.MainMenu;
+            }
+        }
     }
 }
