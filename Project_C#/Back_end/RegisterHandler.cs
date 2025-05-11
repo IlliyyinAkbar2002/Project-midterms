@@ -32,13 +32,47 @@ namespace Project_C_.Back_end
             Console.Write("Enter nama: ");
             string nama = Console.ReadLine();
 
+            // **Precondition**: Izinkan membatalkan juga di input password
+            if (nama == "1")
+            {
+                nextState = State.Home;  // Automata: Kembali ke Home jika user membatalkan
+                return;
+            }
+
+            Console.Write("Enter NIK: ");
+            string nik = Console.ReadLine();
+            // **Precondition**: Izinkan membatalkan juga di input password
+            if (nik == "1")
+            {
+                nextState = State.Home;  // Automata: Kembali ke Home jika user membatalkan
+                return;
+            }
+
+            Console.Write("Enter RT: ");
+            string rt = Console.ReadLine();
+            // **Precondition**: Izinkan membatalkan juga di input password
+            if (rt == "1")
+            {
+                nextState = State.Home;  // Automata: Kembali ke Home jika user membatalkan
+                return;
+            }
+
+            Console.Write("Enter RW: ");
+            string rw = Console.ReadLine();
+            // **Precondition**: Izinkan membatalkan juga di input password
+            if (rw == "1")
+            {
+                nextState = State.Home;  // Automata: Kembali ke Home jika user membatalkan
+                return;
+            }
+
             nextState = State.Register;
 
             Role role = Role.Masyarakat;  // Role default: Masyarakat
 
             try
             {
-                userManager.Register(username, password, role, nama);
+                userManager.Register(username, password, role, nama, nik, rt, rw);
                 Console.WriteLine("Registration successful! You can log in now.");
                 nextState = State.Login;  // Automata: Berpindah ke Login setelah register sukses
             }

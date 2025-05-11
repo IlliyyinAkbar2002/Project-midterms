@@ -11,6 +11,11 @@ namespace Project_C_
         private static State currentState = State.Home;  // Automata: State dimulai dari Home
         private static User currentUser;
 
+        public static void SetState(State newState)
+        {
+            currentState = newState;
+        }
+
         static void Main(string[] args)
         {
             while (true)
@@ -26,8 +31,7 @@ namespace Project_C_
                         RegisterHandler.Register(userManager, out currentState);
                         break;
                     case State.MainMenu:
-                        Menu.ShowMainMenu(currentUser);
-                        HandleMainMenuSelection();
+                        Menu.ShowMainMenu(currentUser, userManager);
                         break;
                     case State.Posts:
                         // Removed Posts state and handler
