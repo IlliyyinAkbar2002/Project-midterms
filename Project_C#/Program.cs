@@ -39,7 +39,7 @@ namespace Project_C_
                     case State.Logout:
                         Console.WriteLine("Logged out.");
                         currentState = State.Home;  // Automata: Kembali ke Home setelah logout
-                        return;
+                        break;
                     case State.Home:
                         // **Login/Registration Menu**: Pilihan awal untuk login atau register
                         currentState = LandingPage.ShowLoginOrRegisterMenu();

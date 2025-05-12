@@ -25,7 +25,7 @@ namespace Project_C_.Front_end
             }
             else if (currentUser.Role == Role.Lurah)
             {
-                ShowLurahMenu(currentUser);
+                ShowLurahMenu(currentUser, userManager);
             }
             else
             {
@@ -36,77 +36,85 @@ namespace Project_C_.Front_end
         private static void ShowAdminMenu(User currentUser, UserManager userManager)
         {
             Console.WriteLine("=== Admin Menu ===");
-            Console.WriteLine("1. Search User");
-            Console.WriteLine("2. Create New User");
-            Console.WriteLine("3. View All Complaints");
-            Console.WriteLine("4. Search Complaints");
+            Console.WriteLine("1. View Profile");
+            Console.WriteLine("2. Create Post");
+            Console.WriteLine("3. Search User");
+            Console.WriteLine("4. Create New User");
+            Console.WriteLine("5. Lihat semua Complaints");
+            Console.WriteLine("6. Hapus Complaint");
             Console.WriteLine("q. Logout");
             Console.Write("Choose an option: ");
             string choice = Console.ReadLine();
 
+            var postsManager = new Posts();
+            var crudHandler = new CrudHandler(new UserManager(), postsManager, currentUser.Username);
             var crudAdmin = new CrudAdmin();
 
-            switch (choice)
+            var menuActions = new Dictionary<string, Action>
+    {
+        { "1", () => crudHandler.ViewProfile() },
+        { "2", () => crudHandler.CreatePost() },
+        { "3", () => crudAdmin.SearchUser(userManager) },
+        { "4", () => crudAdmin.CreateUser(userManager) },
+        { "5", () => crudAdmin.ViewApprovedPosts() },
+        { "6", () => crudHandler.DeletePost() },
+        { "q", () => Program.SetState(State.Logout) }
+    };
+
+            if (menuActions.ContainsKey(choice))
             {
-                case "1":
-                    crudAdmin.SearchUser(userManager);
-
-                    break;
-                case "2":
-                    crudAdmin.CreateUser(userManager);
-
-                    break;
-                case "3":
-                    crudAdmin.ViewApprovedPosts();
-
-                    break;
-                case "4":
-                    crudAdmin.ViewComplaints();
-                    
-                    break;
-                case "q":
-                    Program.SetState(State.Logout);
-                    return;
-                default:
-                    Console.WriteLine("Invalid option.");
-                    Program.SetState(State.MainMenu);
-                    break;
+                menuActions[choice].Invoke();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option.");
+                Program.SetState(State.MainMenu);
             }
         }
 
-        private static void ShowLurahMenu(User currentUser)
+
+        private static void ShowLurahMenu(User currentUser, UserManager userManager)
         {
-            //Console.WriteLine("=== Lurah Menu ===");
-            //Console.WriteLine("1. View Profile");
-            //Console.WriteLine("2. Approve/Reject Complaints");
-            //Console.WriteLine("3. Search Posts");
-            //Console.WriteLine("q. Logout");
-            //Console.Write("Choose an option: ");
-            //string choice = Console.ReadLine();
 
-            //var lurahHandler = new LurahHandler(currentUser);
+            Console.WriteLine("=== Lurah Menu ===");
+            Console.WriteLine("1. View Profile");
+            Console.WriteLine("2. Approve/Reject Complaints");
+            Console.WriteLine("3. Rubah status komplain");
+            Console.WriteLine("4. Hapus Complaint");
+            Console.WriteLine("q. Logout");
+            Console.Write("Choose an option: ");
+            string choice = Console.ReadLine();
 
-            //switch (choice)
-            //{
-            //    case "1":
-            //        lurahHandler.ViewProfile();
-            //        break;
-            //    case "2":
-            //        lurahHandler.ApproveRejectPosts();
-            //        break;
-            //    case "3":
-            //        lurahHandler.SearchPosts();
-            //        break;
-            //    case "q":
-            //        Program.SetState(State.Logout);
-            //        return;
-            //    default:
-            //        Console.WriteLine("Invalid option.");
-            //        break;
-            //}
+            var postsManager = new Posts();
+            var crudHandler = new CrudHandler(new UserManager(), postsManager, currentUser.Username);
+            var lurahHandler = new CrudAdmin();
 
-            //Program.SetState(State.MainMenu);
+            var menuActions = new Dictionary<string, Action>
+    {
+        { "1", () => crudHandler.ViewProfile() },
+        { "2", () => lurahHandler.ReviewPendingPosts() },
+        { "3", () => lurahHandler.ReviewApprovedPosts() },
+        { "4", () => crudHandler.DeletePost() }, 
+        { "q", () => Program.SetState(State.Logout) }
+    };
+
+            if (menuActions.ContainsKey(choice))
+            {
+                menuActions[choice].Invoke();
+
+                // Only skip main menu if logging out
+                if (choice != "q")
+                {
+                    Program.SetState(State.MainMenu);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid option.");
+                Program.SetState(State.MainMenu);
+            }
         }
+
 
         private static void ShowMasyarakatMenu(User currentUser)
         {
@@ -122,29 +130,27 @@ namespace Project_C_.Front_end
             var postsManager = new Posts();
             var crudHandler = new CrudHandler(new UserManager(), postsManager, currentUser.Username);
 
-            switch (choice)
+            var menuActions = new Dictionary<string, Action>
+    {
+        { "1", () => crudHandler.ViewProfile() },
+        { "2", () => crudHandler.CreatePost() },
+        { "3", () => crudHandler.ViewApprovedPosts() },
+        { "4", () => crudHandler.DeleteOwnPost() },
+        { "q", () => Program.SetState(State.Logout) }
+    };
+
+            if (menuActions.ContainsKey(choice))
             {
-                case "1":
-                    crudHandler.ViewProfile();
-                    break;
-                case "2":
-                    crudHandler.CreatePost();
-                    break;
-                case "3":
-                    crudHandler.ViewPost();
-                    break;
-                case "4":
-                    crudHandler.DeletePost();
-                    break;
-                case "q":
-                    Program.SetState(State.Logout);
-                    return;
-                default:
-                    Console.WriteLine("Invalid option.");
-                    break;
+                menuActions[choice].Invoke();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option.");
             }
 
-            Program.SetState(State.MainMenu);
+            if (choice != "q")
+                Program.SetState(State.MainMenu);
         }
+
     }
 }

@@ -65,10 +65,26 @@ public class Posts
         {
             posts.Remove(postToDelete);
             SavePostsToFile();
+            Console.WriteLine("Post deleted successfully.");
         }
         else
         {
             Console.WriteLine("Post not found.");
+        }
+    }
+
+    public void DeletePostByUser(string title, string username)
+    {
+        var postToDelete = posts.FirstOrDefault(p => p.Title == title && p.Author == username);
+        if (postToDelete != null)
+        {
+            posts.Remove(postToDelete);
+            SavePostsToFile();
+            Console.WriteLine("Post deleted successfully.");
+        }
+        else
+        {
+            Console.WriteLine("You can only delete your own post or the post was not found.");
         }
     }
 

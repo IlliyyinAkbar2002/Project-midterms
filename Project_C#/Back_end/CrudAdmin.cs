@@ -66,92 +66,103 @@ public class CrudAdmin
         if (user == null)
         {
             Console.WriteLine("User not found.");
+            return;
         }
-        else
-        {
-            Console.WriteLine("=== User Found ===");
-            Console.WriteLine($"Username: {user.Username}");
-            Console.WriteLine($"Name: {user.Nama}");
-            Console.WriteLine($"Role: {user.Role}");
-            Console.WriteLine($"NIK: {user.NIK}, RT: {user.RT}, RW: {user.RW}");
 
-            Console.WriteLine("\nEdit Options:");
-            Console.WriteLine("1. Change Role");
-            Console.WriteLine("2. Edit Personal Data");
-            Console.WriteLine("x. Cancel");
-            Console.Write("Choose option: ");
-            string input = Console.ReadLine();
+        Console.WriteLine("=== User Found ===");
+        Console.WriteLine($"Username: {user.Username}");
+        Console.WriteLine($"Name: {user.Nama}");
+        Console.WriteLine($"Role: {user.Role}");
+        Console.WriteLine($"NIK: {user.NIK}, RT: {user.RT}, RW: {user.RW}");
 
-            if (input == "1")
+        Console.WriteLine("\nEdit Options:");
+        Console.WriteLine("1. Change Role");
+        Console.WriteLine("2. Edit Personal Data");
+        Console.WriteLine("x. Cancel");
+        Console.Write("Choose option: ");
+        string input = Console.ReadLine();
+
+        var editOptions = new Dictionary<string, Action>
+    {
+        { "1", () => {
+            Console.WriteLine("Select new role:");
+            Console.WriteLine("1. Masyarakat");
+            Console.WriteLine("2. Lurah");
+            Console.WriteLine("3. Admin");
+            Console.Write("Choice: ");
+            string roleInput = Console.ReadLine();
+
+            var roleMap = new Dictionary<string, Role>
             {
-                Console.WriteLine("Select new role:");
-                Console.WriteLine("1. Masyarakat");
-                Console.WriteLine("2. Lurah");
-                Console.WriteLine("3. Admin");
-                Console.Write("Choice: ");
-                string roleInput = Console.ReadLine();
+                { "1", Role.Masyarakat },
+                { "2", Role.Lurah },
+                { "3", Role.Admin }
+            };
 
-                user.Role = roleInput switch
-                {
-                    "1" => Role.Masyarakat,
-                    "2" => Role.Lurah,
-                    "3" => Role.Admin,
-                    _ => user.Role
-                };
-
+            if (roleMap.ContainsKey(roleInput))
+            {
+                user.Role = roleMap[roleInput];
                 Console.WriteLine("Role updated.");
-                userManager.SaveChanges();
-            }
-            else if (input == "2")
-            {
-                // Ensure the username is unique before updating
-                string newUsername;
-                do
-                {
-                    Console.Write("Enter new username: ");
-                    newUsername = Console.ReadLine();
-
-                    if (userManager.GetUserByUsername(newUsername) != null)
-                    {
-                        Console.WriteLine("Username is already taken. Please choose a different one.");
-                    }
-
-                } while (userManager.GetUserByUsername(newUsername) != null);
-
-                user.Username = newUsername;
-
-                // Ensure NIK is unique before updating
-                string newNIK;
-                do
-                {
-                    Console.Write("Enter new NIK: ");
-                    newNIK = Console.ReadLine();
-
-                    if (userManager.GetUserByNIK(newNIK) != null)
-                    {
-                        Console.WriteLine("NIK is already associated with another user. Please choose a different one.");
-                    }
-
-                } while (userManager.GetUserByNIK(newNIK) != null);
-
-                user.NIK = newNIK;
-
-                Console.Write("Enter new name: ");
-                user.Nama = Console.ReadLine();
-
-                Console.Write("Enter new RT: ");
-                user.RT = Console.ReadLine();
-
-                Console.Write("Enter new RW: ");
-                user.RW = Console.ReadLine();
-
-                Console.WriteLine("User data updated.");
                 userManager.SaveChanges();
             }
             else
             {
-                Console.WriteLine("Cancelled.");
+                Console.WriteLine("Invalid role selection.");
             }
+        }},
+        { "2", () => {
+            // Edit personal data
+            string newUsername;
+            do
+            {
+                Console.Write("Enter new username: ");
+                newUsername = Console.ReadLine();
+
+                if (userManager.GetUserByUsername(newUsername) != null)
+                {
+                    Console.WriteLine("Username is already taken. Please choose a different one.");
+                }
+
+            } while (userManager.GetUserByUsername(newUsername) != null);
+
+            user.Username = newUsername;
+
+            string newNIK;
+            do
+            {
+                Console.Write("Enter new NIK: ");
+                newNIK = Console.ReadLine();
+
+                if (userManager.GetUserByNIK(newNIK) != null)
+                {
+                    Console.WriteLine("NIK is already associated with another user. Please choose a different one.");
+                }
+
+            } while (userManager.GetUserByNIK(newNIK) != null);
+
+            user.NIK = newNIK;
+
+            Console.Write("Enter new name: ");
+            user.Nama = Console.ReadLine();
+
+            Console.Write("Enter new RT: ");
+            user.RT = Console.ReadLine();
+
+            Console.Write("Enter new RW: ");
+            user.RW = Console.ReadLine();
+
+            Console.WriteLine("User data updated.");
+            userManager.SaveChanges();
+        }}
+    };
+
+        if (editOptions.ContainsKey(input))
+        {
+            editOptions[input]();  // Run selected action
+        }
+        else
+        {
+            Console.WriteLine("Cancelled or invalid input.");
         }
     }
 
@@ -246,5 +257,148 @@ public class CrudAdmin
         }
     }
 
+    public void ReviewPendingPosts()
+    {
+        List<Post> pendingPosts = postsManager.GetPostsByStatus(PostStatus.Pending);
+
+        if (pendingPosts.Count == 0)
+        {
+            Console.WriteLine("No pending posts to review.");
+            return;
+        }
+
+        int page = 0;
+        const int pageSize = 5;
+
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("=== Pending Posts Review ===");
+
+            var postsToShow = pendingPosts.Skip(page * pageSize).Take(pageSize).ToList();
+
+            for (int i = 0; i < postsToShow.Count; i++)
+            {
+                var post = postsToShow[i];
+                Console.WriteLine($"{i + 1}. Title: {post.Title}, Author: {post.Author}, Created At: {post.CreatedAt}");
+            }
+
+            Console.WriteLine("\nOptions:");
+            Console.WriteLine("Enter [1-5] to review a post");
+            Console.WriteLine("N - Next Page | P - Previous Page | X - Exit");
+            Console.Write("Your choice: ");
+            string input = Console.ReadLine().Trim().ToUpper();
+
+            if (input == "X")
+                break;
+            else if (input == "N")
+            {
+                if ((page + 1) * pageSize < pendingPosts.Count)
+                    page++;
+            }
+            else if (input == "P")
+            {
+                if (page > 0)
+                    page--;
+            }
+            else if (int.TryParse(input, out int index) && index >= 1 && index <= postsToShow.Count)
+            {
+                var selectedPost = postsToShow[index - 1];
+                Console.Clear();
+                Console.WriteLine($"--- Post Details ---");
+                Console.WriteLine($"Title: {selectedPost.Title}");
+                Console.WriteLine($"Content: {selectedPost.Content}");
+                Console.WriteLine($"Author: {selectedPost.Author}");
+                Console.WriteLine($"Created At: {selectedPost.CreatedAt}");
+                Console.WriteLine("\n1. Approve");
+                Console.WriteLine("2. Reject");
+                Console.WriteLine("3. Back");
+                Console.Write("Choose action: ");
+                string action = Console.ReadLine();
+
+                if (action == "1")
+                {
+                    postsManager.UpdatePostStatus(selectedPost.Title, PostStatus.Approved);
+                    Console.WriteLine("Post approved.");
+                    pendingPosts.Remove(selectedPost); // Update in memory list
+                }
+                else if (action == "2")
+                {
+                    postsManager.UpdatePostStatus(selectedPost.Title, PostStatus.Rejected);
+                    Console.WriteLine("Post rejected.");
+                    pendingPosts.Remove(selectedPost); // Update in memory list
+                }
+
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Press any key to continue...");
+                Console.ReadKey();
+            }
+        }
+    }
+
+    public void ReviewApprovedPosts()
+    {
+        List<Post> approvedPosts = postsManager.GetPostsByStatus(PostStatus.Approved);
+
+        if (approvedPosts.Count == 0)
+        {
+            Console.WriteLine("No approved posts to review.");
+            return;
+        }
+
+        int pageSize = 5;
+        int page = 0;
+
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("=== Review Approved Posts (Page " + (page + 1) + ") ===");
+
+            var currentPage = approvedPosts
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            for (int i = 0; i < currentPage.Count; i++)
+            {
+                var post = currentPage[i];
+                Console.WriteLine($"{i + 1}. {post.Title} by {post.Author} - {post.CreatedAt}");
+            }
+
+            Console.WriteLine("n - Next Page | p - Previous Page | number - Mark as Finished | x - Exit");
+            Console.Write("Choose: ");
+            string input = Console.ReadLine();
+
+            if (input == "n" && (page + 1) * pageSize < approvedPosts.Count)
+            {
+                page++;
+            }
+            else if (input == "p" && page > 0)
+            {
+                page--;
+            }
+            else if (int.TryParse(input, out int index) && index >= 1 && index <= currentPage.Count)
+            {
+                var selectedPost = currentPage[index - 1];
+                postsManager.UpdatePostStatus(selectedPost.Title, PostStatus.Finished);
+                Console.WriteLine($"Post '{selectedPost.Title}' marked as Finished.");
+                Thread.Sleep(1500); // Brief pause before reloading
+                approvedPosts = postsManager.GetPostsByStatus(PostStatus.Approved); // Refresh list
+            }
+            else if (input == "x")
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input.");
+                Thread.Sleep(1000);
+            }
+        }
+    }
 
 }

@@ -77,6 +77,36 @@ public class CrudHandler
 		Console.Write("Enter the title of the post to delete: ");
 		string title = Console.ReadLine();
 		postsManager.DeletePost(title);
-		Console.WriteLine("Post deleted successfully.");
+		
 	}
+
+    public void DeleteOwnPost()
+    {
+        Console.Write("Enter the title of your post to delete: ");
+        string title = Console.ReadLine();
+        postsManager.DeletePostByUser(title, currentUsername); // pass currentUsername
+    }
+
+
+    public void ViewApprovedPosts()
+    {
+        List<Post> approvedPosts = postsManager.GetPostsByStatus(PostStatus.Approved);
+
+        if (approvedPosts.Count == 0)
+        {
+            Console.WriteLine("No approved posts found.");
+            return;
+        }
+
+        Console.WriteLine("=== Approved Posts ===");
+        foreach (var post in approvedPosts)
+        {
+            Console.WriteLine($"Title: {post.Title}");
+            Console.WriteLine($"Content: {post.Content}");
+            Console.WriteLine($"Author: {post.Author}");
+            Console.WriteLine($"Created At: {post.CreatedAt}");
+            Console.WriteLine($"Status: {post.Status}");
+            Console.WriteLine(new string('-', 40));
+        }
+    }
 }
