@@ -18,7 +18,7 @@ namespace Project_C_.Front_end
             }
 
             // **Design by Contract**: Postcondition - Menampilkan menu berdasarkan role pengguna
-            Console.WriteLine($"Welcome, {currentUser.Username}! Your role is {currentUser.Role}.");
+            Console.WriteLine($"Welcome, {currentUser.Nama}! Your role is {currentUser.Role}.");
             if (currentUser.Role == Role.Admin)
             {
                 ShowAdminMenu(currentUser, userManager);

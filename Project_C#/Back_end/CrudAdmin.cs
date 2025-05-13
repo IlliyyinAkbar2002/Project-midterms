@@ -69,7 +69,7 @@ public class CrudAdmin
             return;
         }
 
-        Console.WriteLine("=== User Found ===");
+        Console.WriteLine("=== User Ditemukan ===");
         Console.WriteLine($"Username: {user.Username}");
         Console.WriteLine($"Name: {user.Nama}");
         Console.WriteLine($"Role: {user.Role}");
@@ -78,6 +78,7 @@ public class CrudAdmin
         Console.WriteLine("\nEdit Options:");
         Console.WriteLine("1. Change Role");
         Console.WriteLine("2. Edit Personal Data");
+        Console.WriteLine("3. Change Password");
         Console.WriteLine("x. Cancel");
         Console.Write("Choose option: ");
         string input = Console.ReadLine();
@@ -153,8 +154,22 @@ public class CrudAdmin
 
             Console.WriteLine("User data updated.");
             userManager.SaveChanges();
+        }},
+        { "3", () => {
+            Console.Write("Enter new password: ");
+            string newPassword = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                Console.WriteLine("Password cannot be empty.");
+                return;
+            }
+
+            user.Password = newPassword;  // Assuming `Password` is a property of `User`
+            Console.WriteLine("Password updated.");
+            userManager.SaveChanges();
         }}
-    };
+     };
 
         if (editOptions.ContainsKey(input))
         {

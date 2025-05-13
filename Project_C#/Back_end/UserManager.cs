@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;  // Pastikan Anda menambahkan referensi ke Newtonsoft.Json
+using Newtonsoft.Json;  
 
 namespace Project_C_.Back_end
 {
@@ -55,7 +55,7 @@ namespace Project_C_.Back_end
             if (users.Any(u => u.Username == username))
                 throw new ArgumentException("Username already exists.");
 
-            // **Precondition**: Pastikan username belum terdaftar
+            // **Precondition**: Pastikan nik belum terdaftar
             if (users.Any(u => u.NIK == nik))
                 throw new ArgumentException("Nik sudah terpakai.");
 

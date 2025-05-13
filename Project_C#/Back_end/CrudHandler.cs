@@ -16,14 +16,19 @@ public class CrudHandler
 
 	public void ViewProfile()
 	{
-		User user = userManager.GetUserByUsername(currentUsername);
+        Console.WriteLine("===Profile Anda===");
+        User user = userManager.GetUserByUsername(currentUsername);
 		Console.WriteLine($"Username: {user.Username}");
 		Console.WriteLine($"Password: {user.Password}");
-		Console.WriteLine($"Nama: {user.Nama}");		
+		Console.WriteLine($"Nama: {user.Nama}");
+		Console.WriteLine($"Status: {user.Role}");
+		Console.WriteLine($"NIK: {user.NIK}");
+		Console.WriteLine($"RT: {user.RT}");
+		Console.WriteLine($"RW: {user.RW}");
 	}
 
-	// Create Post
-	public void CreatePost()
+    // Create Post
+    public void CreatePost()
 	{
 		Console.Write("Title: ");
 		string title = Console.ReadLine();
