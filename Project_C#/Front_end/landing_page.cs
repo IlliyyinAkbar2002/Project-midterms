@@ -21,25 +21,22 @@ namespace Project_C_.Front_end
             Console.Write("Select an option (1, 2, or 3): ");
             string choice = Console.ReadLine();
 
-            // **Precondition**: Pastikan input adalah angka 1, 2, atau 3
-            if (choice == "1")
+            var menuActions = new Dictionary<string, Func<State>>
             {
-                return State.Login;  // Automata: Pindah ke Login
-            }
-            else if (choice == "2")
+                { "1", () => State.Login },
+                { "2", () => State.Register },
+                { "3", () => { Environment.Exit(0); return State.Home; } }
+            };
+
+            if (menuActions.ContainsKey(choice))
             {
-                return State.Register;  // Automata: Pindah ke Register
-            }
-            else if (choice == "3")
-            {
-                Environment.Exit(0);  // Keluar dari program
+                return menuActions[choice]();
             }
             else
             {
                 Console.WriteLine("Invalid choice! Please try again.");
+                return State.Home;
             }
-
-            return State.Home;  // Automata: Tetap di Home jika input invalid
         }
     }
 }
