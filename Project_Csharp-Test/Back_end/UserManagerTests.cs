@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Project_C_.Back_end;
+using System;
 
-namespace Project_Csharp_Test.Back_end
+namespace Project_C_Tests
 {
     [TestClass]
     public class UserManagerTests
@@ -13,70 +10,26 @@ namespace Project_Csharp_Test.Back_end
         private UserManager userManager;
         private string testFilePath;
 
-        // Buat file unik untuk setiap test agar tidak bentrok
-        private string GetUniqueTestFilePath()
-        {
-            return Path.Combine(Path.GetTempPath(), $"test_users_{Guid.NewGuid()}.json");
-        }
-
         [TestInitialize]
         public void Setup()
         {
-            testFilePath = GetUniqueTestFilePath();
-            File.WriteAllText(testFilePath, "[]"); // Buat file kosong
-
-            userManager = new UserManagerTestable(testFilePath);
+            testFilePath = $"test_users_{Guid.NewGuid()}.json"; // Buat file unik per test
+            File.WriteAllText(testFilePath, "[]");
+            userManager = new UserManager(testFilePath);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            // Hapus file setelah test selesai
             if (File.Exists(testFilePath))
-            {
-                try
-                {
-                    File.Delete(testFilePath);
-                }
-                catch (IOException ex)
-                {
-                    Console.WriteLine("Cleanup gagal: " + ex.Message);
-                }
-            }
-        }
-
-        [TestMethod]
-        public void Register_AddsNewUserSuccessfully()
-        {
-            userManager.Register("testuser", "password", Role.Masyarakat, "Nama", "1234567890", "001", "002");
-
-            var user = userManager.GetUserByUsername("testuser");
-            Assert.IsNotNull(user);
-            Assert.AreEqual("testuser", user.Username);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Register_ThrowsError_WhenUsernameExists()
-        {
-            userManager.Register("testuser", "password", Role.Masyarakat, "Nama", "1234567890", "001", "002");
-            userManager.Register("testuser", "password2", Role.Masyarakat, "Nama", "1234567891", "001", "002");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Register_ThrowsError_WhenNikExists()
-        {
-            userManager.Register("user1", "password", Role.Masyarakat, "Nama", "123", "001", "002");
-            userManager.Register("user2", "password", Role.Masyarakat, "Nama", "123", "001", "002"); // NIK sama
+                File.Delete(testFilePath);
         }
 
         [TestMethod]
         public void Authenticate_ReturnsUser_WhenCredentialsAreCorrect()
         {
-            userManager.Register("testuser", "password", Role.Masyarakat, "Nama", "1234567890", "001", "002");
+            userManager.Register("testuser", "password", Role.Masyarakat, "Nama", "123", "01", "01");
             var user = userManager.Authenticate("testuser", "password");
-
             Assert.IsNotNull(user);
             Assert.AreEqual("testuser", user.Username);
         }
@@ -85,23 +38,58 @@ namespace Project_Csharp_Test.Back_end
         [ExpectedException(typeof(InvalidOperationException))]
         public void Authenticate_ThrowsError_WhenPasswordIncorrect()
         {
-            userManager.Register("testuser", "password", Role.Masyarakat, "Nama", "1234567890", "001", "002");
+            userManager.Register("testuser", "password", Role.Masyarakat, "Nama", "123", "01", "01");
             userManager.Authenticate("testuser", "wrongpassword");
         }
-    }
 
-    // Subclass untuk testing: override file dan inisialisasi data
-    public class UserManagerTestable : UserManager
-    {
-        public UserManagerTestable(string filePath)
+        [TestMethod]
+        public void Register_AddsUserSuccessfully()
         {
-            typeof(UserManager)
-                .GetField("usersFilePath", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-                ?.SetValue(null, filePath);
-
-            typeof(UserManager)
-                .GetField("users", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(this, new System.Collections.Generic.List<User>());
+            userManager.Register("user1", "pw", Role.Masyarakat, "Nama", "999", "01", "01");
+            var user = userManager.GetUserByUsername("user1");
+            Assert.IsNotNull(user);
+            Assert.AreEqual("user1", user.Username);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Register_Throws_WhenDuplicateUsername()
+        {
+            userManager.Register("user1", "pw", Role.Masyarakat, "Nama", "999", "01", "01");
+            userManager.Register("user1", "pw", Role.Masyarakat, "Nama", "888", "01", "01");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Register_Throws_WhenDuplicateNIK()
+        {
+            userManager.Register("user1", "pw", Role.Masyarakat, "Nama", "999", "01", "01");
+            userManager.Register("user2", "pw", Role.Masyarakat, "Nama", "999", "01", "01");
+        }
+
+        [TestMethod]
+        public void GetAllUsers_ReturnsCorrectUserList()
+        {
+            userManager.Register("user1", "pass1", Role.Masyarakat, "Nama1", "111", "001", "002");
+            userManager.Register("user2", "pass2", Role.Masyarakat, "Nama2", "222", "003", "004");
+
+            var allUsers = userManager.GetAllUsers();
+
+            Assert.AreEqual(2, allUsers.Count);
+            Assert.IsTrue(allUsers.Any(u => u.Username == "user1"));
+            Assert.IsTrue(allUsers.Any(u => u.Username == "user2"));
+        }
+
+        [TestMethod]
+        public void GetUserByNIK_ReturnsCorrectUser()
+        {
+            userManager.Register("user1", "pass1", Role.Masyarakat, "Nama1", "999123", "001", "002");
+
+            var user = userManager.GetUserByNIK("999123");
+
+            Assert.IsNotNull(user);
+            Assert.AreEqual("user1", user.Username);
+        }
+
     }
 }

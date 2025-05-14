@@ -11,21 +11,19 @@ namespace Project_C_.Back_end
     public class UserManager
     {
         private List<User> users;
-        
-        private const string usersFilePath = "users.json";  // Lokasi file JSON
-        
+        private string usersFilePath;
 
-        public UserManager()
+        public UserManager(string? filePath = null)
         {
-            // **Precondition**: Jika file tidak ada, buat file baru atau baca dari file JSON
+            usersFilePath = filePath ?? "users.json"; // default jika tidak diset
             if (File.Exists(usersFilePath))
             {
                 string json = File.ReadAllText(usersFilePath);
-                users = JsonConvert.DeserializeObject<List<User>>(json);
+                users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
             }
             else
             {
-                users = new List<User>();  // Jika file tidak ada, buat daftar kosong
+                users = new List<User>();
             }
         }
 
