@@ -16,14 +16,19 @@ public class CrudHandler
 
 	public void ViewProfile()
 	{
-		User user = userManager.GetUserByUsername(currentUsername);
+        Console.WriteLine("===Profile Anda===");
+        User user = userManager.GetUserByUsername(currentUsername);
 		Console.WriteLine($"Username: {user.Username}");
 		Console.WriteLine($"Password: {user.Password}");
-		Console.WriteLine($"Nama: {user.Nama}");		
+		Console.WriteLine($"Nama: {user.Nama}");
+		Console.WriteLine($"Status: {user.Role}");
+		Console.WriteLine($"NIK: {user.NIK}");
+		Console.WriteLine($"RT: {user.RT}");
+		Console.WriteLine($"RW: {user.RW}");
 	}
 
-	// Create Post
-	public void CreatePost()
+    // Create Post
+    public void CreatePost()
 	{
 		Console.Write("Title: ");
 		string title = Console.ReadLine();
@@ -48,29 +53,6 @@ public class CrudHandler
 			Console.WriteLine($"Title: {post.Title}\nContent: {post.Content}\nAuthor: {post.Author}\nCreated At: {post.CreatedAt}\n");
 		}
 	}
-
-	// public void SearchPost()
-	// {
-	// 	Console.Write("Enter the title of the post to search: ");
-	// 	string title = Console.ReadLine();
-    //     var post = postsManager.GetAllPosts()
-    //          .FirstOrDefault(p => p != null && p.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
-	// 	if (post != null)
-	// 	{
-	// 		Console.WriteLine($"Title: {post.Title}\nContent: {post.Content}\nAuthor: {post.Author}\nCreated At: {post.CreatedAt}");
-	// 		Console.Write("Do you want to delete this post? (y/n): ");
-	// 		string input = Console.ReadLine();
-	// 		if (input.Equals("y", StringComparison.OrdinalIgnoreCase))
-	// 		{
-	// 			postsManager.DeletePost(title);
-	// 			Console.WriteLine("Post deleted successfully.");
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		Console.WriteLine("Post not found.");
-	// 	}
-	// }
 
 	public void DeletePost()
 	{

@@ -4,28 +4,26 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;  // Pastikan Anda menambahkan referensi ke Newtonsoft.Json
+using Newtonsoft.Json;  
 
 namespace Project_C_.Back_end
 {
     public class UserManager
     {
         private List<User> users;
-        
-        private const string usersFilePath = "users.json";  // Lokasi file JSON
-        
+        private string usersFilePath;
 
-        public UserManager()
+        public UserManager(string? filePath = null)
         {
-            // **Precondition**: Jika file tidak ada, buat file baru atau baca dari file JSON
+            usersFilePath = filePath ?? "users.json"; // default jika tidak diset
             if (File.Exists(usersFilePath))
             {
                 string json = File.ReadAllText(usersFilePath);
-                users = JsonConvert.DeserializeObject<List<User>>(json);
+                users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
             }
             else
             {
-                users = new List<User>();  // Jika file tidak ada, buat daftar kosong
+                users = new List<User>();
             }
         }
 
@@ -55,9 +53,11 @@ namespace Project_C_.Back_end
             if (users.Any(u => u.Username == username))
                 throw new ArgumentException("Username already exists.");
 
-            // **Precondition**: Pastikan username belum terdaftar
+            // **Precondition**: Pastikan nik belum terdaftar
             if (users.Any(u => u.NIK == nik))
                 throw new ArgumentException("Nik sudah terpakai.");
+
+            ValidateUserData(nik, rt, rw);
 
             // **Postcondition**: Pengguna baru ditambahkan ke daftar pengguna
             User newUser = new User(username, password, role, nama, nik, rt, rw);
@@ -72,10 +72,22 @@ namespace Project_C_.Back_end
             File.WriteAllText(usersFilePath, json);
         }
 
-        // get a user by username
+        
         public User GetUserByUsername(string username)
         {
             return users.FirstOrDefault(u => u.Username == username);
+        }
+
+        private void ValidateUserData(string nik, string rt, string rw)
+        {
+            if (nik.Length != 16 || !nik.All(char.IsDigit))
+                throw new ArgumentException("NIK harus 16 digit angka.");
+
+            if (rt.Length != 2 || !rt.All(char.IsDigit))
+                throw new ArgumentException("RT harus 2 digit angka.");
+
+            if (rw.Length != 2 || !rw.All(char.IsDigit))
+                throw new ArgumentException("RW harus 2 digit angka.");
         }
 
         public List<User> GetAllUsers()

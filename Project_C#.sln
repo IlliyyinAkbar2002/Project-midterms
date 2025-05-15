@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project_C#", "Project_C#\Project_C#.csproj", "{E52625B8-346A-49B5-92F4-22C608BEB77D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project_Csharp-Test", "Project_Csharp-Test\Project_Csharp-Test.csproj", "{910491CA-8BB0-4E33-A9C2-1CEDBCCF2C9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E52625B8-346A-49B5-92F4-22C608BEB77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E52625B8-346A-49B5-92F4-22C608BEB77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E52625B8-346A-49B5-92F4-22C608BEB77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{910491CA-8BB0-4E33-A9C2-1CEDBCCF2C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{910491CA-8BB0-4E33-A9C2-1CEDBCCF2C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{910491CA-8BB0-4E33-A9C2-1CEDBCCF2C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{910491CA-8BB0-4E33-A9C2-1CEDBCCF2C9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

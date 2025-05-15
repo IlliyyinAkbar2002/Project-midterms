@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Protobuf.Collections;
 using Newtonsoft.Json;
 
 public enum PostStatus
@@ -35,21 +36,38 @@ public class Post
 
 public class Posts
 {
+
     private List<Post> posts;  // Daftar untuk menyimpan data post
-    private const string postsFilePath = "crud_masyarakat.json";  // Lokasi file JSON untuk posts
-    public Posts()
+    private string postsFilePath = "crud_masyarakat.json";  // Lokasi file JSON untuk posts
+
+    public Posts(string? customFilePath = null)
     {
-        // **Precondition**: Jika file tidak ada, buat file baru atau baca dari file JSON
+        postsFilePath = customFilePath ?? "crud_masyarakat.json";
+
         if (File.Exists(postsFilePath))
         {
             string json = File.ReadAllText(postsFilePath);
-            posts = JsonConvert.DeserializeObject<List<Post>>(json);
+            posts = JsonConvert.DeserializeObject<List<Post>>(json) ?? new List<Post>();
         }
         else
         {
-            posts = new List<Post>();  // Jika file tidak ada, buat daftar kosong
+            posts = new List<Post>();
         }
     }
+    
+    //public Posts()
+    //{
+    //    // **Precondition**: Jika file tidak ada, buat file baru atau baca dari file JSON
+    //    if (File.Exists(postsFilePath))
+    //    {
+    //        string json = File.ReadAllText(postsFilePath);
+    //        posts = JsonConvert.DeserializeObject<List<Post>>(json);
+    //    }
+    //    else
+    //    {
+    //        posts = new List<Post>();  // Jika file tidak ada, buat daftar kosong
+    //    }
+    //}
 
     public void AddPost(string title, string content, string author)
     {
