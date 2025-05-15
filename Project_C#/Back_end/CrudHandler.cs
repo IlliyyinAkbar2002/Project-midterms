@@ -32,10 +32,26 @@ public class CrudHandler
 	{
 		Console.Write("Title: ");
 		string title = Console.ReadLine();
+		
 		Console.Write("Content: ");
 		string content = Console.ReadLine();
-		postsManager.AddPost(title, content, currentUsername);
-		Console.WriteLine("Post created successfully.");
+		
+		// Check if title or content is empty
+		if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(content))
+		{
+			Console.WriteLine("Error: Title and content cannot be empty. Post creation cancelled.");
+			return;
+		}
+		
+		try
+		{
+			postsManager.AddPost(title, content, currentUsername);
+			Console.WriteLine("Post created successfully.");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error creating post: {ex.Message}");
+		}
 	}
 
 	// View Posts

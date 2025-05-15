@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Google.Protobuf.Collections;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 public enum PostStatus
 {
@@ -54,26 +55,27 @@ public class Posts
             posts = new List<Post>();
         }
     }
-    
-    //public Posts()
-    //{
-    //    // **Precondition**: Jika file tidak ada, buat file baru atau baca dari file JSON
-    //    if (File.Exists(postsFilePath))
-    //    {
-    //        string json = File.ReadAllText(postsFilePath);
-    //        posts = JsonConvert.DeserializeObject<List<Post>>(json);
-    //    }
-    //    else
-    //    {
-    //        posts = new List<Post>();  // Jika file tidak ada, buat daftar kosong
-    //    }
-    //}
 
     public void AddPost(string title, string content, string author)
     {
+        // Preconditions
+        if (string.IsNullOrEmpty(title))
+            throw new ArgumentException("Title cannot be null or empty", nameof(title));
+        if (string.IsNullOrEmpty(content))
+            throw new ArgumentException("Content cannot be null or empty", nameof(content));
+        if (string.IsNullOrEmpty(author))
+            throw new ArgumentException("Author cannot be null or empty", nameof(author));
+        if (posts.Any(p => p.Title == title))
+            throw new InvalidOperationException("A post with this title already exists");
+            
+        // Method implementation
         Post newPost = new Post(title, content, author);
         posts.Add(newPost);
         SavePostsToFile();
+        
+        // Postconditions
+        Debug.Assert(posts.Any(p => p.Title == title && p.Content == content && p.Author == author), 
+            "Post was not successfully added");
     }
 
     public void DeletePost(string title)
