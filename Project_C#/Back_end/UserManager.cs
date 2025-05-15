@@ -57,6 +57,8 @@ namespace Project_C_.Back_end
             if (users.Any(u => u.NIK == nik))
                 throw new ArgumentException("Nik sudah terpakai.");
 
+            ValidateUserData(nik, rt, rw);
+
             // **Postcondition**: Pengguna baru ditambahkan ke daftar pengguna
             User newUser = new User(username, password, role, nama, nik, rt, rw);
             users.Add(newUser);
@@ -70,10 +72,22 @@ namespace Project_C_.Back_end
             File.WriteAllText(usersFilePath, json);
         }
 
-        // get a user by username
+        
         public User GetUserByUsername(string username)
         {
             return users.FirstOrDefault(u => u.Username == username);
+        }
+
+        private void ValidateUserData(string nik, string rt, string rw)
+        {
+            if (nik.Length != 16 || !nik.All(char.IsDigit))
+                throw new ArgumentException("NIK harus 16 digit angka.");
+
+            if (rt.Length != 2 || !rt.All(char.IsDigit))
+                throw new ArgumentException("RT harus 2 digit angka.");
+
+            if (rw.Length != 2 || !rw.All(char.IsDigit))
+                throw new ArgumentException("RW harus 2 digit angka.");
         }
 
         public List<User> GetAllUsers()
